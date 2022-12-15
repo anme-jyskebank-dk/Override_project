@@ -41,6 +41,7 @@ cookiecutter = "^2.1.1"
 Kivy = "^2.1.0"
 Tree = "^0.2.4"
 cruft = "^2.11.1"
+seaborn = "^0.12.1"
 
 
 [build-system]
