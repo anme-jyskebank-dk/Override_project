@@ -113,9 +113,3 @@ def drop_down():
     payload.replace([np.nan], None, inplace = True)
 
     return payload.to_dict("records")
-
-t1 = datetime.now()
-drop_down()
-t2 = datetime.now()
-elapse = t2-t1
-elapse.total_seconds()
