@@ -1,10 +1,22 @@
+'''
 from factor_ratios.functions import BlobConnect, clean_dict, override_iso, override_cap, opslag_name, countryName_to_iso, filterData, GetLastSaturday
 import io
 import pandas as pd
 import numpy as np
 from typing import Union, List
-'''
-def sizeFactor(type: Union[str, None] = None, region: Union[str, None] = None, filter_str: str = None):    
+
+def sizeFactor(type: Union[str, None] = None, region: Union[str, None] = None, filter_str: str = None):
+    """
+    Calculates the number of papers for the specific filtering.
+
+    Args:
+        type: The desired type the factor ratios are calculated on either Region, Sector, Group or Industry.
+        region: The region to filter the data on, can be global for no filtering else Asia, Custom, Emerging Markets, Europe, Japan, North America, China or United States.
+        filter_str: A country, region, sector, indsutry group or industry to further filter the data on.
+
+    Returns:
+        (dict): Returns a dictionary with the number of papers for the specific filtering.
+    """       
     week_ID = GetLastSaturday()
     lRequestedCols = ["week", "isin", "companyName", "countryIso","regionName","sectorName", "GIC_GROUP_NM", "industryName" ,"marketCap","jyskeQuantQuint","valueQuint","qualityQuint","momentumQuint", "countryName"]
     keyvault = "kv-dad-d"

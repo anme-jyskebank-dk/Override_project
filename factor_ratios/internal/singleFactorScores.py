@@ -2,9 +2,23 @@ from factor_ratios.functions import BlobConnect, clean_dict, override_iso, overr
 import io
 import pandas as pd
 import numpy as np
-from typing import Union, List
+from typing import Union
 
 def singleFactorScoreOverTime(weeks: Union[int, None] = None, type: Union[str, None] = None, region: Union[str, None] = None, marketcap: Union[bool, None] = None, filter_str: str = None, faktor_list: Union[list, None] = None):    
+    """
+    Calculates a single factor ratio or multiple factor ratios for the desired region, sector, industry group or industry for multiple weeks.
+
+    Args:
+        weeks: The desired number of weeks to get data for looking back in time. That means if 10 is provided, it will show data from the last ten weeks.
+        type: The desired type the factor ratios are calculated on either Region, Sector, Group or Industry.
+        region: The region to filter the data on, can be global for no filtering else Asia, Custom, Emerging Markets, Europe, Japan, North America, China or United States.
+        marketcap: A boolean which decides whether the factor ratios are marketCap weighted or not.
+        filter_str: A country, region, sector, indsutry group or industry to further filter the data on.
+        faktor_list: A selection of the desired factors from this list (Jyske Quant, Value, Quality, Momentum).
+
+    Returns:
+        (dict): Returns a dictionary with the desired factor ratio(s), which then are used in the endpoint.
+    """   
     keyvault = "kv-dad-d"
     lRequestedCols = ["week", "isin", "companyName", "countryIso","regionName","sectorName", "GIC_GROUP_NM", "industryName" ,"marketCap","jyskeQuantQuint","valueQuint","qualityQuint","momentumQuint", "countryName"]
     blob_service = BlobConnect(keyvault)
@@ -43,9 +57,7 @@ def singleFactorScoreOverTime(weeks: Union[int, None] = None, type: Union[str, N
     override_cap(df["cap_factors"], data)
     
     data = filterData(data, opslag, region, filter_str)
-
     data = data[data["week"] >= int(GetWeeks(weeks))]
-
     data = [opslag_func_single(data, opslag = opslag, cap = marketcap, week_ID = x, faktor_list = faktor_list) for x in np.unique(data["week"])]
     data = pd.concat(data, ignore_index= True)
     data = data.fillna(method='ffill')
@@ -58,6 +70,20 @@ def singleFactorScoreOverTime(weeks: Union[int, None] = None, type: Union[str, N
     return data.loc[:, filter_cols].to_dict("records")
 
 def singleFactorScoreOverTime2(weeks: int, type: list = None, region: list = None, marketcap: Union[bool, None] = None, filter_str: list = None, faktor_list: Union[list, None] = None):    
+    """
+    Calculates a single factor ratio or multiple factor ratios for a list of desired region, sector, industry group or industry for multiple weeks.
+
+    Args:
+        weeks: The desired number of weeks to get data for looking back in time. That means if 10 is provided, it will show data from the last ten weeks.
+        type: The desired type the factor ratios are calculated on either Region, Sector, Group or Industry.
+        region: The region to filter the data on, can be global for no filtering else Asia, Custom, Emerging Markets, Europe, Japan, North America, China or United States.
+        marketcap: A boolean which decides whether the factor ratios are marketCap weighted or not.
+        filter_str: A country, region, sector, indsutry group or industry to further filter the data on.
+        faktor_list: A selection of the desired factors from this list (Jyske Quant, Value, Quality, Momentum).
+
+    Returns:
+        (dict): Returns a dictionary with the desired factor ratio(s), which then are used in the endpoint.
+    """   
     keyvault = "kv-dad-d"
     lRequestedCols = ["week", "isin", "companyName", "countryIso","regionName","sectorName", "GIC_GROUP_NM", "industryName" ,"marketCap","jyskeQuantQuint","valueQuint","qualityQuint","momentumQuint", "countryName"]
     blob_service = BlobConnect(keyvault)
@@ -105,12 +131,10 @@ def singleFactorScoreOverTime2(weeks: int, type: list = None, region: list = Non
     override_iso(df["iso_change"], data, override_dict)
     override_cap(df["cap_factors"], data)
 
+    data = data[data["week"] >= int(GetWeeks(weeks))]
     data_list = []
     for i in range(len(opslag)):
         data2 = filterData(data, opslag[i], region[i], filter_str[i])
-
-        data2 = data2[data2["week"] >= int(GetWeeks(weeks))]
-
         data2 = [opslag_func_single(data2, opslag = opslag[i], cap = marketcap, week_ID = x, faktor_list = faktor_list) for x in np.unique(data2["week"])]
         data2 = pd.concat(data2, ignore_index= True)
         data2["week"] = pd.to_datetime(data2["week"], format = "%Y%m%d")

@@ -1,4 +1,3 @@
-from factor_ratios.main import app
 import pytest
 import pandas as pd
 import numpy as np
@@ -89,7 +88,7 @@ def test_new_reg_custom(data_inputs):
 
 def test_new_reg_global(data_inputs):
     '''Verifies that the function changes the "regionName" column to the desired array'''
-    assert (np.unique(new_reg_global(data_inputs).regionName) == np.array(["Asia", "China", "Emerging Markets", "Europe", "Japan", "US"])).all()
+    assert (np.unique(new_reg_global(data_inputs).regionName) == np.array(["Asia", "China", "Emerging Markets", "Europe", "Japan", "United States"])).all()
 
 def test_score_type(score_inputs):
     '''Verifies that the returned data is a float'''
@@ -168,7 +167,7 @@ def test_opslag_name_sector():
 
 def test_opslag_name_subsector():
     '''Verifies that all input combinations changed the opslag variable to the correct column name'''
-    assert opslag_name("Subsector", "Global") == "GIC_GROUP_NM"
+    assert opslag_name("Group", "Global") == "GIC_GROUP_NM"
 
 def test_opslag_name_industry():
     '''Verifies that all input combinations changed the opslag variable to the correct column name'''
@@ -236,7 +235,7 @@ def test_clean_dict_capNone(dict_inputs):
 def test_filterData_US(data_inputs):
     '''Verify the the function returns the correct subset of the original dataset'''
     data = new_reg_global(data_inputs)
-    assert data[data["regionName"] == "US"].equals(filterData(data_inputs, "regionName", "Global", "US"))
+    assert data[data["regionName"] == "United States"].equals(filterData(data_inputs, "regionName", "Global", "United States"))
 
 def test_filterData_sector(data_inputs):
     '''Verify the the function returns the correct subset of the original dataset'''

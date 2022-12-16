@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from factor_ratios.functions import GetLastSaturday, GetMaxWeeks
 from factor_ratios.schema import Override, ServiceArk, WeekID, Weeks, FactorScores, FactorScoresSingle, SubfactorScores, TypeAndRegion,\
-     FaktorList, SubFactorElements, TypeAndRegionList, SizeFactor, SubFactorElementsList, SubfactorScoresRoll
+     FaktorList, SubFactorElements, TypeAndRegionList, SubFactorElementsList, SubfactorScoresRoll #SizeFactor
 from typing import Union, List
 from factor_ratios.internal.factorScores import factorScores
 from factor_ratios.internal.factorScoresOverTime import factorScoresOverTime
@@ -89,10 +89,10 @@ async def tabel_historisk(weeks: Weeks=Depends(Weeks), type: TypeAndRegion=Depen
     Skab den ønskede tabel med faktorratios (40/40 ratios) for Jyske Quant over tid med følgende information.
 
     - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet.
+    - **filter_str**: Den enkelte region, land, sektor eller industri, der ønkses faktor ratios for.
     - **weeks**: Antal uger der ønskes at gå tilbage i tiden fx 52 for et år tilbage.
     - **type**: Hvilken type man ønsker at sortere efter ["Region", "Sector", "Industry"].
     - **region**: Den region man ønsker at sortere efter ["Global", "Europe", "China", "US", "Emerging Markets", "Asia", "North America", "Custom", "Japan", "EM ex. China"].
-    - **filter_str**: Den enkelte region, land, sektor eller industri, der ønkses faktor ratios for.
     - **Request body": En liste med de faktorer, der ønskes beregninger for. Dette kan være alle kombinationer af denne liste ["Jyske Quant", "Value", "Quality", "Momentum"].
 
     """
@@ -124,10 +124,11 @@ async def tabel_historisk(weeks: Weeks=Depends(Weeks), type: TypeAndRegionList=D
     - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet.
     - **weeks**: Antal uger der ønskes at gå tilbage i tiden fx 52 for et år tilbage.
     - **Request body**:\\
-    **type**: Hvilken type man ønsker at sortere efter ["Region", "Sector", "Industry"] som en liste af kombinationer af forestående liste.\\
+    **filter_str**: Den enkelte region, land, sektor eller industri, der ønkses faktor ratios for som en liste.\\
+    **type**: Hvilken type man ønsker at sortere efter ["Region", "Sector", "Industry"] som en liste af kombinationer af foranstående liste.\\
     **region**: Den region man ønsker at sortere efter ["Global", "Europe", "China", "US", "Emerging Markets", "Asia", "North America", "Custom", "Japan", "EM ex. China"] som
-    en liste af kombinationer af forestående liste.\\
-    **filter_str**: Den enkelte region, land, sektor eller industri, der ønkses faktor ratios for som en liste.
+    en liste af kombinationer af foranstående liste.\\
+    **faktorList**: Den eller de faktorer fra Jyske Quant universet man ønsker beregninger for ["Jyske Quant", "Value", "Quality", "Momentum"] som en liste af kombinationer af foranstående liste
 
     """
     weeks = weeks.weeks
@@ -179,13 +180,11 @@ async def plot_sub(weeks: Weeks=Depends(Weeks), factor_score_quint: SubFactorEle
     """
     Skab den ønskede tabel med faktorratios (40/40 ratios) for Jyske Quant subfaktorer eller faktorer over tid med følgende information
 
-    - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet.
+    - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet
     - **weeks**: Antal uger der ønskes at gå tilbage i tiden fx 52 for et år tilbage.
-    - **Request body**:\\
-    **factor_score_quint**: Hvilke kvintiler der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"] som en liste af kombinationer af forestående liste.
-    **factor_score**: De Jyske Quant faktorer ovenstående kvintiler skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"] som en liste af kombinationer af forestående liste.
-    **factor_subscore**: De subfaktorer der ønskes 40/40 ratios af målt kun på en filtrering af ovenstående valg ["AbsValue", "RelValue", "Profitability", "Growth", "Safety",
-     "EarningsStability", "Sentiment", "Price"] som en liste af kombinationer af forestående liste.
+    - **factor_score_quint**: Hvilken quintil der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"].
+    - **factor_score**: Den Jyske Quant faktor ovenstående quintil skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"].
+    - **factor_subscore**: Den subfaktor der ønskes 40/40 ratios af målt kun på en filtrering af ovenstående valg ["AbsValue", "RelValue", "Profitability", "Growth", "Safety", "EarningsStability", "Sentiment", "Price"].
 
     """
 
@@ -213,11 +212,13 @@ async def plot_sub(weeks: Weeks=Depends(Weeks), factor_score_quint: SubFactorEle
     """
     Skab den ønskede tabel med faktorratios (40/40 ratios) for Jyske Quant subfaktorer eller faktorer over tid med følgende information
 
-    - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet
+    - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet.
     - **weeks**: Antal uger der ønskes at gå tilbage i tiden fx 52 for et år tilbage.
-    - **factor_score_quint**: Hvilken quintil der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"].
-    - **factor_score**: Den Jyske Quant faktor ovenstående quintil skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"].
-    - **factor_subscore**: Den subfaktor der ønskes 40/40 ratios af målt kun på en filtrering af ovenstående valg ["AbsValue", "RelValue", "Profitability", "Growth", "Safety", "EarningsStability", "Sentiment", "Price"].
+    - **Request body**:\\
+    **factor_score_quint**: Hvilke kvintiler der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"] som en liste af kombinationer af foranstående liste.
+    **factor_score**: De Jyske Quant faktorer ovenstående kvintiler skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"] som en liste af kombinationer af foranstående liste.
+    **factor_subscore**: De subfaktorer der ønskes 40/40 ratios af målt kun på en filtrering af ovenstående valg ["AbsValue", "RelValue", "Profitability", "Growth", "Safety",
+     "EarningsStability", "Sentiment", "Price"] som en liste af kombinationer af foranstående liste.
 
     """
 
@@ -245,11 +246,14 @@ async def plot_sub(weeks: Weeks=Depends(Weeks), factor_score_quint: SubFactorEle
     """
     Skab den ønskede tabel med faktorratios (40/40 ratios) for Jyske Quant subfaktorer eller faktorer over tid med følgende information
 
-    - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet
+    - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet.
+    - **roll**: Det ønskede antal uger det rullende gennemsnit skal beregnes på.
     - **weeks**: Antal uger der ønskes at gå tilbage i tiden fx 52 for et år tilbage.
-    - **factor_score_quint**: Hvilken quintil der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"].
-    - **factor_score**: Den Jyske Quant faktor ovenstående quintil skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"].
-    - **factor_subscore**: Den subfaktor der ønskes 40/40 ratios af målt kun på en filtrering af ovenstående valg ["AbsValue", "RelValue", "Profitability", "Growth", "Safety", "EarningsStability", "Sentiment", "Price"].
+    - **Request body**:\\
+    **factor_score_quint**: Hvilke kvintiler der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"] som en liste af kombinationer af foranstående liste.
+    **factor_score**: De Jyske Quant faktorer ovenstående kvintiler skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"] som en liste af kombinationer af foranstående liste.
+    **factor_subscore**: De subfaktorer der ønskes 40/40 ratios af målt kun på en filtrering af ovenstående valg ["AbsValue", "RelValue", "Profitability", "Growth", "Safety",
+     "EarningsStability", "Sentiment", "Price"] som en liste af kombinationer af foranstående liste.
 
     """
 
@@ -274,9 +278,9 @@ tags = ["Serviceark"])
 async def service(week_ID: WeekID=Depends(WeekID)):
     """
     Få data udtræk for Jyske Quant for følgende koloner:
-    - ["week", "isin", "companyName", "countryIso", "regionName", "sectorName", "industryName", "marketCap", "jyskeQuantQuint", "valueQuint", "qualityQuint", "momentumQuint",
-     "jyskeQuantScore", "valueScore", "qualityScore", "momentumScore", "absValueQuint", "relValueQuint", "profitabilityQuint", "growthQuint", "safetyQuint", "earningsStabilityQuint",
-     "sentimentQuint", "priceQuint"].
+    - ["week", "SEDOL", "isin", "companyName", "countryIso", "regionName", "sectorName", "GIC_GROUP_NM", "industryName", "marketCap", "jyskeQuantQuint", "valueQuint",
+      "qualityQuint", "momentumQuint" , "jyskeQuantScore", "valueScore", "qualityScore", "momentumScore", "absValueQuint", "relValueQuint", "profitabilityQuint",
+      "growthQuint", "safetyQuint", "earningsStabilityQuint", "sentimentQuint", "priceQuint"]
 
     Med følgende informationer:
 

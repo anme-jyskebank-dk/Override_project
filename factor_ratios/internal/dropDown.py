@@ -1,11 +1,20 @@
 from factor_ratios.functions import BlobConnect, new_reg_custom, new_reg_global, clean_dict, override_iso, override_cap
 import io
-from datetime import datetime
 import pandas as pd
 import numpy as np
-from itertools import permutations, combinations
+from itertools import combinations
 
 def drop_down():
+    """
+    Calculates all the possible selections for all combinations of type, region and filter_str based on current week data from jyske Quant.
+    E.g. Russia is not currently an option in Week_ID 20221126, so it will not show for the user, when using the drop down menus in the excel sheet.
+
+    Args:
+        None
+        
+    Returns:
+        (dict): Returns a dictionary with all possible combinations of type, region and filter_str based on current week data from jyske Quant.
+    """   
     ## Indlæsning og omskrivning af data
     keyvault = "kv-dad-d"
     lRequestedCols = ["week", "regionName", "countryName", "countryIso", "sectorName", "GIC_GROUP_NM", "industryName"]

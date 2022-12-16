@@ -140,6 +140,7 @@ def new_reg_custom(df):
 
     Args:
         df: The dataFrame in which the regionName column will be edited.
+
     Returns:
         (df): Returns the edited and larger dataFrame.
     """
@@ -164,6 +165,7 @@ def new_reg_global(df):
 
     Args:
         df: The dataFrame in which the regionName column will be edited.
+
     Returns:
         (df): Returns the edited and larger dataFrame.
     """
@@ -191,6 +193,7 @@ def score(ds):
 
     Args:
         ds: The dataSeries with quintiles as indexes and a count of each index as the value.
+
     Returns:
         (int): Returns the score.
     """
@@ -211,6 +214,7 @@ def doable_tabel(df, opslag):
     Args:
         df: The dataFrame to make the filtering on.
         opslag: The columnName of the desired filtering condition.
+
     Returns:
         (df): Returns the filtered dataFrame.
     """  
@@ -227,9 +231,10 @@ def opslag_func_tabel(df=pd.DataFrame, opslag=str, reg = [str, None], cap = [boo
     Args:
         df: The dataFrame to make the calculations on.
         opslag: The columnName of the desired filtering condition.
-        reg: The name of the region to filter the data upon, can also be "Global" if no region is wanted.
+        reg: The name of the region to filter the data on, can also be "Global" if no region is wanted.
         cap: A boolean which decides whether the factor ratios are marketCap weighted or not.
-        week_ID: The desired week on which to do the calculations as an integer of the format [YYYYMMDD]
+        week_ID: The desired week on which to do the calculations as an integer of the format [YYYYMMDD].
+
     Returns:
         (df): Returns the factor ratios for the given specifications in a dataFrame.
     """  
@@ -326,8 +331,9 @@ def opslag_func_single(df=pd.DataFrame, opslag=str, cap = [bool, None], week_ID 
         df: The dataFrame to make the calculations on.
         opslag: The columnName of the desired filtering condition.
         cap: A boolean which decides whether the factor ratios are marketCap weighted or not.
-        week_ID: The desired week on which to do the calculations as an integer of the format [YYYYMMDD]
+        week_ID: The desired week on which to do the calculations as an integer of the format [YYYYMMDD].
         faktor_list: The desired factor or factors to calculate the ratios for as a list.
+
     Returns:
         (df): Returns the factor ratios for the given specifications in a dataFrame.
     """   
@@ -382,8 +388,9 @@ def opslag_all_tabel(df=pd.DataFrame, opslag=str, reg = [str, None], cap = [bool
     Args:
         df: The dataFrame to make the calculations on.
         opslag: The columnName of the desired filtering condition.
-        reg: The name of the region to filter the data upon, can also be "Global" if no region is wanted.
+        reg: The name of the region to filter the data on, can also be "Global" if no region is wanted.
         cap: A boolean which decides whether the factor ratios are marketCap weighted or not.
+
     Returns:
         (df): Returns the factor ratios for the given specifications in a dataFrame for every week_ID contained in the original dataFrame.
     """  
@@ -406,7 +413,8 @@ def opslag_name(type, region):
 
     Args:
         type: The type of filtering wanted either "Region", "Sector" or "Industry".
-        region: The name of the region to filter the data upon, can also be "Global" if no region is wanted and Custom if the custom created region is wanted.
+        region: The name of the region to filter the data on, can also be "Global" if no region is wanted and Custom if the custom created region is wanted.
+
     Returns:
         (str): Returns the needed column name to use for the right filtering.
     """  
@@ -430,6 +438,7 @@ def fill_na_Q3(df, subfactor):
     Args:
         df: The dataFrame to make the calculations on.
         subfactor: A subfactor or factor column.
+
     Returns:
         (df): Returns the edited dataFrame.
     """  
@@ -444,8 +453,9 @@ def subfactor_scores_single(data, factor_score_quint, factor_score, subfactor_sc
     Args:
         data: The dataFrame to make the calculations on.
         factor_score_quint: A quintil rank for a given factor
-        factor_score: A factor column
+        factor_score: A factor column.
         subfactor_score: A subfactor or factor column.
+
     Returns:
         (df): Returns the factor ratios over time for the given specifications in a dataFrame.
     """  
@@ -479,6 +489,7 @@ def rename_factors(body):
 
     Args:
         body: The factor list wanted to get renamed.
+
     Returns:
         (list): Returns the edited list of factor names.
     """  
@@ -496,7 +507,8 @@ def override_iso(dict, data, override_dict):
     Args:
         dict: A dictionary with the "isin"'s to overwrite as keys and the new "countryIso"'s as values.
         data: The dataFrame containing the data to overwrite.
-        override_dict: A dictionary containing all "countryIso"'s as keys and matching "regionName"'s as values
+        override_dict: A dictionary containing all "countryIso"'s as keys and matching "regionName"'s as values.
+
     Returns:
         (): It has no return argument as it just applies the change to the given dataFrame.
     """  
@@ -517,6 +529,7 @@ def override_cap(dict, data):
     Args:
         dict: A dictionary with the "isin"'s to overwrite as keys and the factors to mulitply the marketCap with as a float as values.
         data: The dataFrame containing the data to overwrite.
+
     Returns:
         (): It has no return argument as it just applies the change to the given dataFrame.
     """  
@@ -534,7 +547,8 @@ def clean_dict(df):
     Cleans a dataFrame which is contructed by a dictionary with nested dictionaries, which means it contain NAN values.
 
     Args:
-        df: The dataFrame containing the nested dicts to be cleaned
+        df: The dataFrame containing the nested dicts to be cleaned.
+
     Returns:
         (dict): Returns a dictionary with x nested dictionaries inside.
     """  
@@ -563,8 +577,9 @@ def filterData(df, opslag, region, filter_str):
     Args:
         data: The dataFrame to make the calculations on.
         opslag: The columnName of the desired filtering condition.
-        region: The name of the region to filter the data upon, can also be "Global" if no region is wanted.
+        region: The name of the region to filter the data on, can also be "Global" if no region is wanted.
         filter_str: The countryName to rewrite as a countryIso. 
+
     Returns:
         (df): Returns a subset of the original dataFrame.
     """  
@@ -602,8 +617,9 @@ def getData(container_over, container_quant):
     if the the week_ID from the research override container isn't up to date.
 
     Args:
-        container_over: The blob.service container client for research override
-        container_quant: The blob.service container client for jyske Quant
+        container_over: The blob.service container client for research override.
+        container_quant: The blob.service container client for jyske Quant.
+        
     Returns:
         (df): Returns the newest base dataFrame containing up to 22 columns.
     """  

@@ -29,6 +29,9 @@ app = FastAPI(title="Research factor ratios",
                 data fra Jyske Quant. Opdatering sker via et dictionary, hvor der angives to nested dictionaries. Først et dict med "isin"'s på papirer som "keys" og "Iso" på det
                 land, det pågældende papir ønskes ændret til som "value", hvor efter region også bliver opdateret. Dernæst et dict ligeledes med "isin"'s på papirer som "keys" og
                 en float som "value", der angiver hvilken faktor det ønskede papirs omsætning ønskes ganget med for at ændre marketCap til den andel af aktier, der handles. 
+
+                \n **Drop_down:** Drop_down er en GET request, der afleverer alle mulige kombinationer af typer, region og filter_str anvendt i de andre endpoints for den seneste uge i
+                Jyske Quant. Denne anvendes, så slutbrugeren kun bliver tilbudt inputvariable, der kan fremskaffe resultater for.
                 
                 ''')
 

@@ -3,6 +3,15 @@ import io
 import pandas as pd
 
 def serviceark(week_ID):
+    """
+    Extracts information from predefined columns for a given week of Jyske Quant, for users to do there own calculations on.
+
+    Args:
+        week_ID: The desired week on which to do the calculations as an integer of the format [YYYYMMDD].
+        
+    Returns:
+        (dict): Returns a dictionary with all the predefined columns.
+    """   
     lRequestedCols = ["week", "SEDOL", "isin", "companyName", "countryIso", "regionName", "sectorName", "GIC_GROUP_NM", "industryName", "marketCap", "jyskeQuantQuint", "valueQuint", "qualityQuint", "momentumQuint" , "jyskeQuantScore", "valueScore", 
     "qualityScore", "momentumScore", "absValueQuint", "relValueQuint", "profitabilityQuint", "growthQuint", "safetyQuint", "earningsStabilityQuint", "sentimentQuint", "priceQuint"]
     keyvault = "kv-dad-d"
