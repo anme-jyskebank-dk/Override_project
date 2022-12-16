@@ -1,5 +1,4 @@
-from factor_ratios.functions import BlobConnect, new_reg_custom, new_reg_global, clean_dict, override_iso, override_cap
-import io
+from factor_ratios.functions import new_reg_custom, new_reg_global, clean_dict, override_iso, override_cap, newest_parquet
 import pandas as pd
 import numpy as np
 from itertools import combinations
@@ -11,30 +10,17 @@ def drop_down():
 
     Args:
         None
-        
+
     Returns:
         (dict): Returns a dictionary with all possible combinations of type, region and filter_str based on current week data from jyske Quant.
     """   
     ## Indlæsning og omskrivning af data
-    keyvault = "kv-dad-d"
     lRequestedCols = ["week", "regionName", "countryName", "countryIso", "sectorName", "GIC_GROUP_NM", "industryName"]
-    blob_service = BlobConnect(keyvault)
-    blob_service_client_research_overrides = blob_service.get_container_client(container='research-overrides')
-    blob_service_client_jyske_quant = blob_service.get_container_client(container='jyske-quant')
-    file_list = []
-    my_blobs2 = blob_service_client_research_overrides.list_blobs()
-    for blob2 in my_blobs2:
-        file_list.append(blob2.name)
-    file = [i for i in file_list if i.startswith('override_')]
-    file = io.BytesIO(blob_service_client_research_overrides.download_blob(file[-1]).readall())
-    df = pd.read_parquet(file, engine='pyarrow')
+   
+    df = newest_parquet("research_overrides")
     df = clean_dict(df.iloc[:,-2:])
 
-    my_blobs = blob_service_client_jyske_quant.list_blobs()
-    for blob in my_blobs:
-        blob.name
-    file_temp = io.BytesIO(blob_service_client_jyske_quant.download_blob(blob.name).readall())
-    df_temp = pd.read_parquet(file_temp, engine='pyarrow', columns= lRequestedCols)
+    df_temp = newest_parquet("jyske_quant", lRequestedCols)
     override_dict = pd.Series(df_temp["regionName"].values, index = df_temp["countryIso"]).to_dict()
 
     override_iso(df["iso_change"], df_temp, override_dict)

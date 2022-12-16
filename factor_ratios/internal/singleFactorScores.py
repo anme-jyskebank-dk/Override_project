@@ -1,5 +1,4 @@
-from factor_ratios.functions import BlobConnect, clean_dict, override_iso, override_cap, opslag_name, countryName_to_iso, rename_factors, GetWeeks, opslag_func_single, filterData, getData
-import io
+from factor_ratios.functions import BlobConnect, clean_dict, override_iso, override_cap, opslag_name, countryName_to_iso, rename_factors, GetWeeks, opslag_func_single, filterData, getData, newest_parquet
 import pandas as pd
 import numpy as np
 from typing import Union
@@ -27,20 +26,10 @@ def singleFactorScoreOverTime(weeks: Union[int, None] = None, type: Union[str, N
     data = getData(blob_service_client_research_overrides, blob_service_client_jyske_quant)[lRequestedCols]
     opslag = opslag_name(type, region)
 
-    file_list = []
-    my_blobs2 = blob_service_client_research_overrides.list_blobs()
-    for blob2 in my_blobs2:
-        file_list.append(blob2.name)
-    file = [i for i in file_list if i.startswith('override_')]
-    file = io.BytesIO(blob_service_client_research_overrides.download_blob(file[-1]).readall())
-    df = pd.read_parquet(file, engine='pyarrow')
+    df = newest_parquet("research_overrides")
     df = clean_dict(df.iloc[:,-2:])
 
-    my_blobs = blob_service_client_jyske_quant.list_blobs()
-    for blob in my_blobs:
-        blob.name
-    file_temp = io.BytesIO(blob_service_client_jyske_quant.download_blob(blob.name).readall())
-    df_temp = pd.read_parquet(file_temp, engine='pyarrow', columns= lRequestedCols)
+    df_temp = newest_parquet("jyske_quant", lRequestedCols)
     override_dict = pd.Series(df_temp["regionName"].values, index = df_temp["countryIso"]).to_dict()
 
     try:
@@ -96,24 +85,10 @@ def singleFactorScoreOverTime2(weeks: int, type: list = None, region: list = Non
         op = opslag_name(type[i], region[i])
         opslag.append(op)
 
-    my_blobs2 = blob_service_client_research_overrides.list_blobs()
-    for blob2 in my_blobs2:
-        blob2.name
-
-    file = io.BytesIO(blob_service_client_research_overrides.download_blob(blob2.name).readall())
-    df = pd.read_parquet(file, engine='pyarrow')
-
+    df = newest_parquet("research_overrides")
     df = clean_dict(df.iloc[:,-2:])
 
-    my_blobs = blob_service_client_jyske_quant.list_blobs()
-    test = []
-    for blob in my_blobs:
-        test.append(blob.name)
-    test = [i for i in test if i.startswith('weekly-scores_') and i >= "weekly-scores_" + GetWeeks(weeks)]
-
-
-    file_temp = io.BytesIO(blob_service_client_jyske_quant.download_blob(test[-1]).readall())
-    df_temp = pd.read_parquet(file_temp, engine='pyarrow', columns= lRequestedCols)
+    df_temp = newest_parquet("jyske_quant", lRequestedCols)
     override_dict = pd.Series(df_temp["regionName"].values, index = df_temp["countryIso"]).to_dict()
 
     for i in range(len(filter_str)):
