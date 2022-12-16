@@ -677,6 +677,18 @@ def getData(container_over, container_quant):
 
 
 def newest_parquet(service_client = str, lRequestedCols = [list, None], week_ID: Union[int, None] = None):
+    """
+    This function collects the newest data from the research override storage container or newest if no week_ID is provided data from the jyske quant storage container. 
+    This also means that the function is not able to collect from any storage container only the two mentioned above.
+
+    Args:
+        service_client: En tekst string, der enten er "jyske_quant" eller "research_overrides".
+        lRequestedCols: The requested columns used to get the desired columns from the jyske quant storage container.
+        week_ID: The desired week to get data from, only applies to the jyske quant storage container, because the newest override fil is always wanted. 
+        
+    Returns:
+        (df): Returns a dataframe with overrides or data from a specific week from the Jyske Quant univers.
+    """  
     keyvault = "kv-dad-d"
     blob_service = BlobConnect(keyvault)
     blob_service_client_jyske_quant = blob_service.get_container_client(container='jyske-quant')
