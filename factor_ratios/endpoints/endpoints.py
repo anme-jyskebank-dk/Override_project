@@ -93,7 +93,7 @@ async def tabel_historisk(weeks: Weeks=Depends(Weeks), type: TypeAndRegion=Depen
     - **weeks**: Antal uger der ønskes at gå tilbage i tiden fx 52 for et år tilbage.
     - **type**: Hvilken type man ønsker at sortere efter ["Region", "Sector", "Industry"].
     - **region**: Den region man ønsker at sortere efter ["Global", "Europe", "China", "US", "Emerging Markets", "Asia", "North America", "Custom", "Japan", "EM ex. China"].
-    - **Request body": En liste med de faktorer, der ønskes beregninger for. Dette kan være alle kombinationer af denne liste ["Jyske Quant", "Value", "Quality", "Momentum"].
+    - **Request body**: En liste med de faktorer, der ønskes beregninger for. Dette kan være alle kombinationer af denne liste ["Jyske Quant", "Value", "Quality", "Momentum"].
 
     """
     
@@ -215,10 +215,10 @@ async def plot_sub(weeks: Weeks=Depends(Weeks), factor_score_quint: SubFactorEle
     - **marketcap**: Angives som True, hvis man ønsker at sortere efter marketCap frem for ligevægtet.
     - **weeks**: Antal uger der ønskes at gå tilbage i tiden fx 52 for et år tilbage.
     - **Request body**:\\
-    **factor_score_quint**: Hvilke kvintiler der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"] som en liste af kombinationer af foranstående liste.
-    **factor_score**: De Jyske Quant faktorer ovenstående kvintiler skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"] som en liste af kombinationer af foranstående liste.
+    **factor_score_quint**: Hvilke kvintiler der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"] som en liste af kombinationer af foranstående liste.\\
+    **factor_score**: De Jyske Quant faktorer ovenstående kvintiler skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"] som en liste af kombinationer af foranstående liste.\\
     **factor_subscore**: De subfaktorer der ønskes 40/40 ratios af målt kun på en filtrering af ovenstående valg ["AbsValue", "RelValue", "Profitability", "Growth", "Safety",
-     "EarningsStability", "Sentiment", "Price"] som en liste af kombinationer af foranstående liste.
+     "EarningsStability", "Sentiment", "Price"] som en liste af kombinationer af foranstående liste.\\
 
     """
 
@@ -250,10 +250,10 @@ async def plot_sub(weeks: Weeks=Depends(Weeks), factor_score_quint: SubFactorEle
     - **roll**: Det ønskede antal uger det rullende gennemsnit skal beregnes på.
     - **weeks**: Antal uger der ønskes at gå tilbage i tiden fx 52 for et år tilbage.
     - **Request body**:\\
-    **factor_score_quint**: Hvilke kvintiler der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"] som en liste af kombinationer af foranstående liste.
-    **factor_score**: De Jyske Quant faktorer ovenstående kvintiler skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"] som en liste af kombinationer af foranstående liste.
+    **factor_score_quint**: Hvilke kvintiler der ønskes en tabel for ["Q1", "Q2", "Q3", "Q4", "Q5"] som en liste af kombinationer af foranstående liste.\\
+    **factor_score**: De Jyske Quant faktorer ovenstående kvintiler skal tages fra ["JyskeQuant", "Value", "Quality", "Momentum"] som en liste af kombinationer af foranstående liste.\\
     **factor_subscore**: De subfaktorer der ønskes 40/40 ratios af målt kun på en filtrering af ovenstående valg ["AbsValue", "RelValue", "Profitability", "Growth", "Safety",
-     "EarningsStability", "Sentiment", "Price"] som en liste af kombinationer af foranstående liste.
+     "EarningsStability", "Sentiment", "Price"] som en liste af kombinationer af foranstående liste.\\
 
     """
 
@@ -321,7 +321,7 @@ summary="Mulige input til brug i andre endpoints",
 tags = ["Drop_down"])
 async def drop_down_excel():
     '''
-    SKaber en tabel med mulige valg for drop down menu i excel ark. De mulige valg skabes udelukkende på baggrund af, hvilke land, region, sektorer, industry grupper
+    Skaber en tabel med mulige valg for drop down menu i excel ark. De mulige valg skabes udelukkende på baggrund af, hvilke land, region, sektorer, industry grupper
     og industrier, der indgår i den pågældende uge i Jyske Quant.
     '''
 
