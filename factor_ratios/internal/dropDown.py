@@ -92,6 +92,8 @@ def drop_down():
         main_drop_downs.append(filter_col)
         type_list.append(filter_col.name)
     main_drop_downs.append(pd.Series(type_list, name = "Types"))
+
+    main_drop_downs.append(pd.Series(["True", "False"], name = "marketcap"))
     
     payload_temp2 = pd.concat(main_drop_downs, axis = 1)
 
